@@ -2,6 +2,8 @@
 #define BITSTREAM_H
 
 #include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 #include <stddef.h>
 
 // growable bit-level writer; bits are packed MSB-first within each byte.
