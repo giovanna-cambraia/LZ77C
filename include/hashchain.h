@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdlib.h>
 
 #define WINDOWS_SIZE 32798
 #define MIN_MATCH 3
