@@ -1,6 +1,7 @@
 #ifndef LZ77_H
 #define LZ77_H
 
+#include <stdio.h>
 #include <stdint.h>
 #include <stddef.h>
 #include <stdlib.h>
