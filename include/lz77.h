@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
+#include <stdlib.h>
 
 // token stream format written by the compress.
 // flag bit: 0 = literal, 1 = match.
