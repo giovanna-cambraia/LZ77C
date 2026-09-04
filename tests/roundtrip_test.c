@@ -32,7 +32,7 @@ static int run_case(const char *name, const uint8_t *input, size_t input_len)
     else
     {
         double ratio = (input_len > 0) ? (double)compressed_len / (double)input_len : 0.0;
-        printf("[PASS] %s: input %zu bytes -> compressed &zu bytes (ration %.3f)\n", name, input_len, compressed_len, ratio);
+        printf("[PASS] %s: input %zu bytes -> compressed %zu bytes (ratio %.3f)\n", name, input_len, compressed_len, ratio);
         ok = 1;
     }
 
@@ -65,13 +65,14 @@ int main(void)
     }
 
     {
-        uint8_t data [256];
-        for (int i = 0; i < 256; i++) data [i] = (uint8_t)i;
+        uint8_t data[256];
+        for (int i = 0; i < 256; i++)
+            data[i] = (uint8_t)i;
         total++;
         passed += run_case("no_repeats_incrementing", data, sizeof(data));
     }
 
-     {
+    {
         const char *text =
             "The quick brown fox jumps over the lazy dog. "
             "The quick brown fox jumps over the lazy dog again. "
@@ -81,19 +82,20 @@ int main(void)
         total++;
         passed += run_case("mixed_text", (const uint8_t *)text, strlen(text));
     }
- 
-     // match at max window/length boundary: distance near WINDOW_SIZE isn't
-     // tested here (needs a huge buffer), but a long single repeated run
-     // exercises MAX_MATCH clamping/splitting across multiple match tokens.
+
+    // match at max window/length boundary: distance near WINDOW_SIZE isn't
+    // tested here (needs a huge buffer), but a long single repeated run
+    // exercises MAX_MATCH clamping/splitting across multiple match tokens.
     {
         size_t len = 1000;
         uint8_t *data = (uint8_t *)malloc(len);
-        for (size_t i = 0; i < len; i++) data[i] = 'z';
+        for (size_t i = 0; i < len; i++)
+            data[i] = 'z';
         total++;
         passed += run_case("long_single_run", data, len);
         free(data);
     }
- 
+
     printf("\n%d/%d cases passed\n", passed, total);
     return (passed == total) ? 0 : 1;
 }
