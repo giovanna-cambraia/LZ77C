@@ -7,16 +7,6 @@
 
 int lz77_compress(const uint8_t *input, size_t input_len, uint8_t **out_buf, size_t *out_len)
 {
-    if (input_len == 0)
-    {
-        uint8_t *empty = (uint8_t)malloc(1);
-        if (!empty)
-            return -1;
-        *out_buf = empty;
-        *out_len = 0;
-        return 0;
-    }
-
     hashchain_t hc;
     if (hashchain_init(&hc, input, input_len) != 0)
     {
@@ -29,6 +19,15 @@ int lz77_compress(const uint8_t *input, size_t input_len, uint8_t **out_buf, siz
     {
         hashchain_free(&hc);
         return -1;
+    }
+
+    {
+        uint32_t len_hi = (uint32_t)((uint64_t)input_len >> 32);
+        uint32_t len_lo = (uint32_t)((uint64_t)input_len & 0xFFFFFFFFu);
+        if (bw_write_bits(&bw, len_hi, 32) != 0 ||
+            bw_write_bits(&bw, len_lo, 32) != 0) {
+            goto fail;
+        }
     }
 
     size_t pos = 0;
@@ -88,7 +87,7 @@ int lz77_compress(const uint8_t *input, size_t input_len, uint8_t **out_buf, siz
     }
 
     bw_free(&bw);
-    haschain_free(&hc);
+    hashchain_free(&hc);
     return 0;
 
     fail:
