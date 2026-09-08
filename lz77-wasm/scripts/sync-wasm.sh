@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
 # Copies the emcc build output (dist/lz77.js + dist/lz77.wasm) from the
-# sibling lz77c repo into this package's vendor/ folder.
+# parent lz77c repo into this package's vendor/ folder.
 #
-# Assumes lz77-wasm and lz77c are sibling directories, e.g.:
-#   ~/projetos-dv/lz77c
-#   ~/projetos-dv/lz77-wasm
+# Assumes lz77-wasm lives inside lz77c, e.g.:
+#   ~/projetos-dv/lz77c/dist          (emcc output)
+#   ~/projetos-dv/lz77c/lz77-wasm     (this package)
 #
-# Run this after every `bash build-wasm.sh` in lz77c.
+# Run this after every `bash build-wasm.sh` in lz77c (from the lz77c root).
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PACKAGE_ROOT="$(dirname "$SCRIPT_DIR")"
-LZ77C_DIST="$PACKAGE_ROOT/../lz77c/dist"
+LZ77C_DIST="$PACKAGE_ROOT/../dist"
 VENDOR_DIR="$PACKAGE_ROOT/vendor"
 
 if [ ! -f "$LZ77C_DIST/lz77.js" ] || [ ! -f "$LZ77C_DIST/lz77.wasm" ]; then
